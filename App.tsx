@@ -6,6 +6,7 @@ import { Feed } from './pages/Feed'
 import { SignIn } from './pages/SignIn'
 
 import { AppProvider } from './store/appContext'
+import { SignUp } from './pages/SignUp'
 
 const Stack = createStackNavigator()
 
@@ -29,6 +30,7 @@ export default function App() {
         >
           <Stack.Screen name="Feed" component={Feed} />
           <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
       </NavigationContainer>
     </AppProvider>

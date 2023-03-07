@@ -1,26 +1,21 @@
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  Button,
-} from 'react-native'
+import { View, StyleSheet, Text, TextInput, Button } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { appContext } from '../store/appContext'
 
-export const SignIn = (props: any) => {
-  const [username, setUsername] = useState('guest123')
-  const [password, setPassword] = useState('1234')
+export const SignUp = (props: any) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [fullname, setfullname] = useState('')
 
   const appContect = useContext(appContext)
 
-  const login = async () => {
+  const signup = async () => {
     try {
-      appContect?.login({ username, password })
+      appContect?.signup({ username, password, fullname })
 
       setUsername('')
       setPassword('')
+      setfullname('')
       props.navigation.navigate('Feed')
     } catch (err) {
       console.log(err)
@@ -31,6 +26,14 @@ export const SignIn = (props: any) => {
     <View style={styles.container}>
       <Text style={styles.logo}>T</Text>
       <Text style={styles.title}>Welcome to your traveler's community</Text>
+      <TextInput
+        placeholder="Enter your full name"
+        editable
+        multiline
+        onChangeText={(text) => setfullname(text)}
+        value={fullname}
+        style={styles.input}
+      />
       <TextInput
         placeholder="Enter your user-name"
         editable
@@ -49,11 +52,11 @@ export const SignIn = (props: any) => {
       />
       <Text
         style={styles['sign-up']}
-        onPress={() => props.navigation.navigate('SignUp')}
+        onPress={() => props.navigation.navigate('SignIn')}
       >
-        Or sign-up
+        Or sign-in
       </Text>
-      <Button onPress={login} title="Sign in" />
+      <Button onPress={signup} title="Sign up" />
     </View>
   )
 }

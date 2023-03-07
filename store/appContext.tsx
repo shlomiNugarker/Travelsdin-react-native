@@ -17,6 +17,16 @@ export const AppProvider = ({ children }: Props) => {
       setLoggedUser(user)
     } catch (err) {
       console.log(err)
+      throw err
+    }
+  }
+  const signup = async (creds: any) => {
+    try {
+      const user = await userService.signup(creds)
+      setLoggedUser(user)
+    } catch (err) {
+      console.log(err)
+      throw err
     }
   }
 
@@ -25,11 +35,12 @@ export const AppProvider = ({ children }: Props) => {
       await userService.logout()
     } catch (err) {
       console.log(err)
+      throw err
     }
   }
 
   return (
-    <appContext.Provider value={{ loggedUser, login, logout }}>
+    <appContext.Provider value={{ loggedUser, login, logout, signup }}>
       {children}
     </appContext.Provider>
   )
