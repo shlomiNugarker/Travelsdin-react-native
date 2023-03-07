@@ -6,17 +6,19 @@ import {
   TextInput,
   Button,
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { userService } from '../services/user/userService'
+import { appContext } from '../store/appContext'
 
 export const SignIn = (props: any) => {
   const [username, setUsername] = useState('guest123')
   const [password, setPassword] = useState('1234')
 
+  const appContect = useContext(appContext)
+
   const login = async () => {
     try {
-      const user = await userService.login({ username, password })
-      console.log({ user })
+      appContect?.login({ username, password })
 
       setUsername('')
       setPassword('')

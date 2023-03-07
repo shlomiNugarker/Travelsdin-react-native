@@ -5,6 +5,8 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { Feed } from './pages/Feed'
 import { SignIn } from './pages/SignIn'
 
+import { AppProvider } from './store/appContext'
+
 const Stack = createStackNavigator()
 
 const theme = {
@@ -16,25 +18,20 @@ const theme = {
 }
 
 export default function App() {
-  // async function load() {
-  //   const res = await fetch('http://localhost:3030/api/post')
-  //   const json = await res.json()
-  //   console.log(json)
-  // }
-  // load()
-
   return (
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-        initialRouteName="SignIn"
-      >
-        <Stack.Screen name="Feed" component={Feed} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AppProvider>
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+          initialRouteName="SignIn"
+        >
+          <Stack.Screen name="Feed" component={Feed} />
+          <Stack.Screen name="SignIn" component={SignIn} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AppProvider>
   )
 }
 
