@@ -7,12 +7,24 @@ import {
   Button,
 } from 'react-native'
 import React, { useState } from 'react'
+import { userService } from '../services/user/userService'
 
-export const SignIn = () => {
+export const SignIn = (props: any) => {
   const [username, setUsername] = useState('guest123')
   const [password, setPassword] = useState('1234')
 
-  const login = () => {}
+  const login = async () => {
+    try {
+      const user = await userService.login({ username, password })
+      console.log({ user })
+
+      setUsername('')
+      setPassword('')
+      //   props.navigation.navigate('Feed')
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -34,7 +46,7 @@ export const SignIn = () => {
         value={password}
         style={styles.input}
       />
-      <Button title="Sign in" />
+      <Button onPress={login} title="Sign in" />
     </View>
   )
 }
