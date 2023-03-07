@@ -9,8 +9,8 @@ type Props = {
 }
 
 export const AppProvider = ({ children }: Props) => {
+  // auth
   const [loggedUser, setLoggedUser] = React.useState<any>(null)
-
   const login = async (creds: any) => {
     try {
       const user = await userService.login(creds)
@@ -29,7 +29,6 @@ export const AppProvider = ({ children }: Props) => {
       throw err
     }
   }
-
   const logout = async () => {
     try {
       await userService.logout()
@@ -38,6 +37,8 @@ export const AppProvider = ({ children }: Props) => {
       throw err
     }
   }
+
+  // post
 
   return (
     <appContext.Provider value={{ loggedUser, login, logout, signup }}>

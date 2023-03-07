@@ -1,12 +1,12 @@
-import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
-import { Feed } from './pages/Feed'
+
+import { Main } from './pages/Main'
 import { SignIn } from './pages/SignIn'
+import { SignUp } from './pages/SignUp'
 
 import { AppProvider } from './store/appContext'
-import { SignUp } from './pages/SignUp'
 
 const Stack = createStackNavigator()
 
@@ -28,7 +28,11 @@ export default function App() {
           }}
           initialRouteName="SignIn"
         >
-          <Stack.Screen name="Feed" component={Feed} />
+          <Stack.Screen
+            name="Main"
+            component={Main}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>

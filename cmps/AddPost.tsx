@@ -1,11 +1,12 @@
-import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
 
-export const Feed = () => {
+export const AddPost = () => {
   return (
     <View>
-      <Text>Feed</Text>
+      <Text>AddPost</Text>
     </View>
   )
 }
+
 const styles = StyleSheet.create({})

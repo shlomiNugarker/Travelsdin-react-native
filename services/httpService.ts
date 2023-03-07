@@ -4,6 +4,7 @@ const BASE_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://travelsdin.onrender.com/api/'
     : '//localhost:3030/api/'
+
 var axios = Axios.create({
   withCredentials: true,
 })

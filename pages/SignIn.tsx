@@ -21,7 +21,7 @@ export const SignIn = (props: any) => {
 
       setUsername('')
       setPassword('')
-      props.navigation.navigate('Feed')
+      props.navigation.navigate('Main', { screen: 'Feed' })
     } catch (err) {
       console.log(err)
     }
