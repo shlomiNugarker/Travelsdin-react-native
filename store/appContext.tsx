@@ -11,7 +11,7 @@ type Props = {
 export const AppProvider = ({ children }: Props) => {
   // auth
   const [loggedUser, setLoggedUser] = React.useState<any>(null)
-  const login = async (creds: any) => {
+  const login = async (creds: any): Promise<void> => {
     try {
       const user = await userService.login(creds)
       setLoggedUser(user)

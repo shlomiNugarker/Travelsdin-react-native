@@ -17,7 +17,7 @@ export const SignIn = (props: any) => {
 
   const login = async () => {
     try {
-      appContect?.login({ username, password })
+      await appContect?.login({ username, password })
 
       setUsername('')
       setPassword('')
@@ -35,7 +35,7 @@ export const SignIn = (props: any) => {
         placeholder="Enter your user-name"
         editable
         multiline
-        onChangeText={(text) => setUsername(text)}
+        onChangeText={setUsername}
         value={username}
         style={styles.input}
       />
@@ -43,8 +43,10 @@ export const SignIn = (props: any) => {
         placeholder="Enter your password"
         editable
         multiline
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={setPassword}
         value={password}
+        secureTextEntry={true}
+        textContentType="password"
         style={styles.input}
       />
       <Text

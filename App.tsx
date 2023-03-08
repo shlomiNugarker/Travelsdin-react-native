@@ -28,11 +28,10 @@ export default function App() {
           }}
           initialRouteName="SignIn"
         >
-          <Stack.Screen
-            name="Main"
-            component={Main}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="Main">
+            {(props) => <Main {...props} />}
+          </Stack.Screen>
+
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
