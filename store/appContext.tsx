@@ -44,6 +44,12 @@ export const AppProvider = ({ children }: Props) => {
   // **********
   // post
   const [posts, setPosts] = useState<any[]>([])
+
+  const loadPosts = async () => {
+    const posts = await postService.query()
+    setPosts(posts)
+  }
+
   const savePost = async (post: any) => {
     try {
       const postToAdd = {
@@ -54,11 +60,11 @@ export const AppProvider = ({ children }: Props) => {
       const addedPost = await postService.save(postToAdd)
 
       if (post._id) {
-        // setPosts((posts) =>
-        //   posts.filter((p) => (p._id === post._id ? post : p))
-        // )
+        setPosts((posts) =>
+          posts.filter((p) => (p._id === addedPost._id ? addedPost : p))
+        )
       } else {
-        const updatedPosts = [postToAdd, ...posts]
+        const updatedPosts = [addedPost, ...posts]
         setPosts(updatedPosts)
       }
     } catch (err) {
@@ -69,7 +75,7 @@ export const AppProvider = ({ children }: Props) => {
 
   return (
     <appContext.Provider
-      value={{ loggedUser, login, logout, signup, savePost, posts }}
+      value={{ loggedUser, login, logout, signup, savePost, posts, loadPosts }}
     >
       {children}
     </appContext.Provider>

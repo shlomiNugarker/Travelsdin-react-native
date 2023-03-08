@@ -6,5 +6,6 @@ export type appContextType = {
   signup: (creds: any) => Promise<void>
   // post
   savePost: (post: any) => Promise<void>
+  loadPosts: () => Promise<void>
   posts: any[]
 }
