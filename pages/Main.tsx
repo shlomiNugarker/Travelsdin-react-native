@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 
 import { Feed } from './Feed'
@@ -42,3 +42,10 @@ export const Main = ({ navigation }: any) => {
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#f3f2ef',
+    minHeight: '100%',
+  },
+})

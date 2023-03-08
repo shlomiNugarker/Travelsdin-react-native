@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { appContextType } from '../interfaces/appContext'
 import { userService } from '../services/user/userService'
+import { postService } from '../services/posts/postService'
+import { useState } from 'react'
 
 export const appContext = React.createContext<appContextType | null>(null)
 
@@ -9,6 +11,7 @@ type Props = {
 }
 
 export const AppProvider = ({ children }: Props) => {
+  // **********
   // auth
   const [loggedUser, setLoggedUser] = React.useState<any>(null)
   const login = async (creds: any): Promise<void> => {
@@ -38,10 +41,36 @@ export const AppProvider = ({ children }: Props) => {
     }
   }
 
+  // **********
   // post
+  const [posts, setPosts] = useState<any[]>([])
+  const savePost = async (post: any) => {
+    try {
+      const postToAdd = {
+        ...post,
+        userId: loggedUser._id,
+        fullname: loggedUser.fullname,
+      }
+      const addedPost = await postService.save(postToAdd)
+
+      if (post._id) {
+        // setPosts((posts) =>
+        //   posts.filter((p) => (p._id === post._id ? post : p))
+        // )
+      } else {
+        const updatedPosts = [postToAdd, ...posts]
+        setPosts(updatedPosts)
+      }
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
+  }
 
   return (
-    <appContext.Provider value={{ loggedUser, login, logout, signup }}>
+    <appContext.Provider
+      value={{ loggedUser, login, logout, signup, savePost, posts }}
+    >
       {children}
     </appContext.Provider>
   )
