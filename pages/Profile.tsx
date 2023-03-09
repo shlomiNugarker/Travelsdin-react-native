@@ -7,8 +7,8 @@ import { PostPreview } from '../cmps/PostPreview'
 export const Profile = () => {
   const appContect = useContext(appContext)
 
-  const myPosts = appContect.posts.filter(
-    (p) => p.userId === appContect.loggedUser._id
+  const myPosts = appContect?.posts.filter(
+    (p) => p.userId === appContect?.loggedUser?._id
   )
   return (
     <ScrollView>
