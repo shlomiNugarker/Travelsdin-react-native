@@ -1,11 +1,15 @@
+import { Creds } from './Creds'
+import Post from './Post'
+import User from './User'
+
 export type appContextType = {
   // auth
-  loggedUser: any
-  login: (creds: any) => Promise<void>
-  logout: (creds: any) => Promise<void>
-  signup: (creds: any) => Promise<void>
+  loggedUser: User | null
+  login: (creds: Creds) => Promise<void>
+  logout: (creds: Creds) => Promise<void>
+  signup: (creds: Creds) => Promise<void>
   // post
-  savePost: (post: any) => Promise<void>
+  savePost: (post: Post) => Promise<void>
   loadPosts: () => Promise<void>
-  posts: any[]
+  posts: Post[]
 }

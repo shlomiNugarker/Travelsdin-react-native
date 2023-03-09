@@ -3,6 +3,9 @@ import { appContextType } from '../interfaces/appContext'
 import { userService } from '../services/user/userService'
 import { postService } from '../services/posts/postService'
 import { useState } from 'react'
+import { Creds } from '../interfaces/Creds'
+import User from '../interfaces/User'
+import Post from '../interfaces/Post'
 
 export const appContext = React.createContext<appContextType | null>(null)
 
@@ -13,17 +16,17 @@ type Props = {
 export const AppProvider = ({ children }: Props) => {
   // **********
   // auth
-  const [loggedUser, setLoggedUser] = React.useState<any>(null)
-  const login = async (creds: any): Promise<void> => {
+  const [loggedUser, setLoggedUser] = React.useState<User | null>(null)
+  const login = async (creds: Creds): Promise<void> => {
     try {
       const user = await userService.login(creds)
-      setLoggedUser(user)
+      if (user) setLoggedUser(user)
     } catch (err) {
       console.log(err)
       throw err
     }
   }
-  const signup = async (creds: any) => {
+  const signup = async (creds: Creds) => {
     try {
       const user = await userService.signup(creds)
       setLoggedUser(user)
@@ -43,15 +46,16 @@ export const AppProvider = ({ children }: Props) => {
 
   // **********
   // post
-  const [posts, setPosts] = useState<any[]>([])
+  const [posts, setPosts] = useState<Post[]>([])
 
   const loadPosts = async () => {
     const posts = await postService.query()
     setPosts(posts)
   }
 
-  const savePost = async (post: any) => {
+  const savePost = async (post: Post) => {
     try {
+      if (!loggedUser) return
       const postToAdd = {
         ...post,
         userId: loggedUser._id,

@@ -1,11 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Image, Button, Pressable } from 'react-native'
 
 import { HiDotsHorizontal } from 'react-icons/hi'
 import { BsSend } from 'react-icons/bs'
 import { BiLike, BiCommentDetail, BiShare } from 'react-icons/bi'
+import { userService } from '../services/user/userService'
+import Post from '../interfaces/Post'
+import User from '../interfaces/User'
 
-export const PostPreview = ({ post }: any) => {
+type Props = {
+  post: Post
+}
+
+export const PostPreview = ({ post }: Props) => {
+  const [userPost, setUserPost] = useState<User | null>(null)
+
+  useEffect(() => {
+    ;(async () => {
+      // loadUserPost
+      if (!post) return
+      const userPost = await userService.getById(post.userId)
+      setUserPost(() => userPost)
+    })()
+  }, [])
+
   return (
     <View style={styles.container}>
       {/* HEADER */}

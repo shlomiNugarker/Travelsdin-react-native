@@ -1,3 +1,4 @@
+import Post from '../../interfaces/Post'
 import { httpService } from '../httpService'
 
 const ENDPOINT = 'post'
@@ -10,7 +11,7 @@ export const postService = {
   getPostsLength,
 }
 
-const postsCash: { [key: string]: any } = {}
+const postsCash: { [key: string]: Post } = {}
 
 async function query(filterBy = {}) {
   return await httpService.get(ENDPOINT, filterBy)
@@ -32,7 +33,7 @@ async function remove(id: string) {
   return await httpService.delete(`${ENDPOINT}/${id}`)
 }
 
-async function save(post: any) {
+async function save(post: Post) {
   return post._id
     ? await httpService.put(`${ENDPOINT}/${post._id}`, post)
     : await httpService.post(ENDPOINT, post)

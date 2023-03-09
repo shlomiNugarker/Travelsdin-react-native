@@ -4,11 +4,12 @@ import { AddPost } from '../cmps/AddPost'
 import { AddPostModal } from '../cmps/AddPostModal'
 import { PostPreview } from '../cmps/PostPreview'
 import { appContext } from '../store/appContext'
+import Post from '../interfaces/Post'
 
 export const Feed = () => {
-  const appContect = useContext(appContext)
   const [isModalShown, setisModalShown] = useState(false)
 
+  const appContect = useContext(appContext)
   useEffect(() => {
     appContect?.loadPosts()
   }, [])
@@ -21,8 +22,12 @@ export const Feed = () => {
         <View>
           <FlatList
             data={appContect?.posts}
-            renderItem={({ item }: any) => <PostPreview post={item} />}
-            keyExtractor={(post: any) => post._id}
+            renderItem={({ item }: { item: Post }) => (
+              <PostPreview post={item} />
+            )}
+            keyExtractor={(post: Post) =>
+              post._id || new Date().getTime().toString()
+            }
             showsVerticalScrollIndicator={false}
           />
         </View>
