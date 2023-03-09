@@ -51,7 +51,6 @@ export const PostPreview = ({ post }: Props) => {
   const isLogedInUserLikePost = post?.reactions.some((reaction) => {
     return appContect?.loggedUser?._id === reaction.userId
   })
-  // const likeBtnStyle = isLogedInUserLikePost ? true : false
 
   return (
     <View style={styles.container}>
