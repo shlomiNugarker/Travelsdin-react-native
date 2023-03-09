@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Image, Button, Pressable } from 'react-native'
+
+import TimeAgo from 'react-timeago'
 
 import { HiDotsHorizontal } from 'react-icons/hi'
 import { BsSend } from 'react-icons/bs'
@@ -7,6 +9,7 @@ import { BiLike, BiCommentDetail, BiShare } from 'react-icons/bi'
 import { userService } from '../services/user/userService'
 import Post from '../interfaces/Post'
 import User from '../interfaces/User'
+import { appContext } from '../store/appContext'
 
 type Props = {
   post: Post
@@ -14,15 +17,41 @@ type Props = {
 
 export const PostPreview = ({ post }: Props) => {
   const [userPost, setUserPost] = useState<User | null>(null)
+  const appContect = useContext(appContext)
 
   useEffect(() => {
     ;(async () => {
       // loadUserPost
-      if (!post) return
+      if (!post.userId) return
       const userPost = await userService.getById(post.userId)
       setUserPost(() => userPost)
     })()
   }, [])
+
+  const onLikePost = async () => {
+    if (!appContect?.loggedUser?._id) return
+    const isAlreadyLike = post.reactions.some(
+      (reaction) => reaction.userId === appContect.loggedUser?._id
+    )
+    if (isAlreadyLike) {
+      post.reactions = post.reactions.filter(
+        (reaction) => reaction.userId !== appContect.loggedUser?._id
+      )
+    } else if (!isAlreadyLike) {
+      post.reactions.push({
+        userId: appContect.loggedUser._id,
+        fullname: appContect.loggedUser.fullname,
+        reaction: 'like',
+      })
+    }
+
+    await appContect.savePost(post)
+  }
+
+  const isLogedInUserLikePost = post?.reactions.some((reaction) => {
+    return appContect?.loggedUser?._id === reaction.userId
+  })
+  // const likeBtnStyle = isLogedInUserLikePost ? true : false
 
   return (
     <View style={styles.container}>
@@ -31,14 +60,16 @@ export const PostPreview = ({ post }: Props) => {
         <View style={styles['profile-container']}>
           <Image
             source={{
-              uri: 'http://res.cloudinary.com/duajg3ah1/image/upload/v1660763357/shlomiN_mewit4.jpg',
+              uri: userPost?.imgUrl,
             }}
             resizeMode="contain"
             style={styles.profile}
           />
           <View style={styles.name}>
-            <Text>Guest</Text>
-            <Text>2 hours ago</Text>
+            <Text>{userPost?.fullname}</Text>
+            <Text>
+              <TimeAgo date={post.createdAt} />
+            </Text>
           </View>
         </View>
         <View>
@@ -60,12 +91,21 @@ export const PostPreview = ({ post }: Props) => {
       )}
       {/* ACTION BTNS */}
       <View style={styles.btns}>
-        <Pressable
-          style={styles['btn-container']}
-          onPress={() => console.log('press')}
-        >
-          <BiLike style={styles.logo} />
-          <Text style={{ marginLeft: 5 }}>Like</Text>
+        <Pressable style={styles['btn-container']} onPress={onLikePost}>
+          <BiLike
+            style={{
+              ...styles.logo,
+              [isLogedInUserLikePost ? 'color' : '']: '#378fe9',
+            }}
+          />
+          <Text
+            style={{
+              marginLeft: 5,
+              [isLogedInUserLikePost ? 'color' : '']: '#378fe9',
+            }}
+          >
+            Like
+          </Text>
         </Pressable>
         <Pressable style={styles['btn-container']}>
           <BiCommentDetail style={styles.logo} />
